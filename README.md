@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Wild Oasis Hotel Website
 
-## Getting Started
+A modern web application for managing hotel reservations and guest information.
 
-First, run the development server:
+## Project Requirements
+
+### Main Features
+
+[X] Users of the app are potential guests and actual guests.
+
+### About Feature
+
+[ ] Guests should be able to learn all about the Wild Oasis Hotel.
+
+### Cabins Feature
+
+[ ] Guests should be able to get information about each cabin and see booked dates.
+[ ] Guests should be able to filter cabins by their maximum guest capacity.
+
+### Reservations Feature
+
+[ ] Guests should be able to reserve a cabin for a certain date range.
+[ ] Reservations are not paid online. Payments will be made at the property upon arrival. Therefore, new reservations should be set to "unconfirmed".
+[ ] Guests should be able to view all their past and future reservations.
+[ ] Guests should be able to update or delete a reservation.
+
+### Authentication Feature
+
+[ ] Guests need to sign up and log in before they can reserve a cabin and perform any operation.
+[ ] On sign up, each guest should get a profile in the DB.
+
+### Profile Feature
+
+[ ] Guests should be able to set and update basic data about their profile to make check-in at the hotel faster.
+
+## Features & Pages
+
+### Home
+
+- Homepage (`/`)
+
+### About
+
+- About Page (`/about`)
+
+### Cabins
+
+- Cabin Overview (`/cabins/`)
+- Cabin Detail (`/cabins/:cabinId`)
+
+### Reservations
+
+- Cabin Detail (`/cabins/:cabinId`) | FOR RESERVATION
+- Reservation List (`/account/reservations`)
+- Edit Reservation (`/account/reservations/edit`)
+
+### Authentication
+
+- Login (`/login`)
+
+### Profile
+
+- Update Profile (`/account/profile`)
+
+## Technologies Used
+
+- Next.js 14.2.26
+- React 18
+- TypeScript
+- TailwindCSS
+- Supabase (Backend)
+
+## Project Setup
+
+### Prerequisites
+
+- Node.js (LTS version recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
-npm run dev
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Starts the development server
+- `npm run build` - Creates the production build
+- `npm run start` - Starts the production server
+- `npm run lint` - Runs linting checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Project Structure
 
-## Learn More
+```
+app/
+  ├── _components/     # Reusable components
+  ├── _lib/           # Utilities and services
+  ├── _styles/        # Global styles and Tailwind configurations
+  └── (routes)/       # Application pages and routes
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env.local` file in the project root with the following variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+```
 
-## Deploy on Vercel
+### Styling
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project uses TailwindCSS for styling, with a custom color palette:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Primary Colors: Blue tones
+- Accent Colors: Beige/brown tones
+
+### Database
+
+The project uses Supabase as the backend, with the following main tables:
+
+- `cabins`: Cabin information
+- `bookings`: Guest reservations
+- `guests`: Guest data
+- `settings`: General system settings
