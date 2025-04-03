@@ -1,6 +1,13 @@
 import Logo from "@/components/Logo";
 import Navigation from "@/components/Navigation";
 
+import { Josefin_Sans } from "next/font/google";
+
+const josefinSans = Josefin_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
+
 import "@/styles/globals.css";
 
 export const metadata = {
@@ -10,7 +17,6 @@ export const metadata = {
   },
   description:
     "Luxurious cabin hotel, nestled in the heart of the Italian Dolomites, surrounded by beautiful mountains and dark forests.",
-  
 };
 
 export default function RootLayout({
@@ -22,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className="bg-primary-950 text-primary-100 min-h-screen"
+        className={`${josefinSans.className} bg-primary-950 text-primary-100 min-h-screen`}
       >
         <header>
           <Logo />
