@@ -1,4 +1,4 @@
-import ReservationCard from "./ReservationCard";
+import ReservationCard from "@/components/ReservationCard";
 
 export default function Page() {
   // CHANGE
