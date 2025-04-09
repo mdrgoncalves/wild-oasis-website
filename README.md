@@ -84,8 +84,6 @@ A modern web application for managing hotel reservations and guest information.
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 ### Available Scripts
