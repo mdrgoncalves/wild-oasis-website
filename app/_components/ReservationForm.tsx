@@ -1,4 +1,6 @@
-import type { CabinType } from "../types/data-service";
+"use client";
+
+import type { CabinType } from "@/types/data-service";
 
 type ReservationFormProps = {
   cabin: CabinType;
