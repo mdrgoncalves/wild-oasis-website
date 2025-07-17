@@ -10,12 +10,12 @@ A modern web application for managing hotel reservations and guest information.
 
 ### About Feature
 
-- [ ] Guests should be able to learn all about the Wild Oasis Hotel.
+- [x] Guests should be able to learn all about the Wild Oasis Hotel.
 
 ### Cabins Feature
 
-- [ ] Guests should be able to get information about each cabin and see booked dates.
-- [ ] Guests should be able to filter cabins by their maximum guest capacity.
+- [x] Guests should be able to get information about each cabin and see booked dates.
+- [x] Guests should be able to filter cabins by their maximum guest capacity.
 
 ### Reservations Feature
 
@@ -26,8 +26,8 @@ A modern web application for managing hotel reservations and guest information.
 
 ### Authentication Feature
 
-- [ ] Guests need to sign up and log in before they can reserve a cabin and perform any operation.
-- [ ] On sign up, each guest should get a profile in the DB.
+- [x] Guests need to sign up and log in before they can reserve a cabin and perform any operation.
+- [x] On sign up, each guest should get a profile in the DB.
 
 ### Profile Feature
 
@@ -97,9 +97,11 @@ npm install
 
 ```
 app/
-  ├── _components/     # Reusable components
+  ├── _components/    # Reusable components
+  ├── _context/       # React Context providers for state management
   ├── _lib/           # Utilities and services
   ├── _styles/        # Global styles and Tailwind configurations
+  ├── types/          # TypeScript type definitions
   └── (routes)/       # Application pages and routes
 ```
 
