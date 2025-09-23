@@ -9,12 +9,12 @@ type AuthorizedParams = {
   request?: NextRequest;
 };
 
-type SessionWithUserId = Session & {
-  user: User & { guestId?: string };
-};
+// type SessionWithUserId = Session & {
+//   user: User & { guestId?: string };
+// };
 
 type SessionParams = {
-  session: SessionWithUserId;
+  session: Session;
   user: User;
 };
 
