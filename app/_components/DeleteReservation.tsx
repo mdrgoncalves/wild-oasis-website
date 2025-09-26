@@ -3,16 +3,20 @@
 import { useTransition } from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import { deleteReservation } from "../_lib/actions";
 import SpinnerMini from "./SpinnerMini";
 
-function DeleteReservation({ bookingId }: { bookingId: number }) {
+type DeleteReservationProps = {
+  bookingId: number;
+  onDelete: (bookingId: number) => void;
+};
+
+function DeleteReservation({ bookingId, onDelete }: DeleteReservationProps) {
   const [isPending, startTransition] = useTransition();
 
   function handleDelete() {
     if (confirm("Are you sure you want to delete this reservation?")) {
       startTransition(() => {
-        deleteReservation(bookingId);
+        onDelete(bookingId);
       });
     }
   }
