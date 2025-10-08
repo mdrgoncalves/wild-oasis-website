@@ -39,9 +39,7 @@ function DateSelector({ cabin, settings, bookedDates }: DateSelectorProps) {
   const defaultClassNames = getDefaultClassNames();
 
   const { range, setRange, resetRange } = useReservation();
-
   const displayRange = isAlreadyBooked(range, bookedDates) ? undefined : range;
-
   const { regularPrice, discount } = cabin;
 
   const numNights = hasValidRange(displayRange)

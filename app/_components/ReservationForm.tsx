@@ -1,7 +1,12 @@
 "use client";
 
+import { differenceInDays } from "date-fns";
+import { createBooking } from "../_lib/actions";
+
 import type { CabinType } from "@/types/data-service";
 import type { User } from "next-auth";
+import { useReservation } from "../_context/ReservationContext";
+import SubmitButton from "./SubmitButton";
 
 type ReservationFormProps = {
   cabin: CabinType;
@@ -9,7 +14,25 @@ type ReservationFormProps = {
 };
 
 function ReservationForm({ cabin, user }: ReservationFormProps) {
-  const { maxCapacity } = cabin;
+  const { range, resetRange } = useReservation();
+  const { maxCapacity, regularPrice, discount, id } = cabin;
+
+  const startDate = range?.from;
+  const endDate = range?.to;
+
+  const hasDates = !!(startDate && endDate);
+  const numNights = hasDates ? differenceInDays(endDate, startDate) : 0;
+  const cabinPrice = numNights * (regularPrice - discount);
+
+  const bookingData = {
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+    cabinId: id,
+  };
+
+  const createBookingWithBookingData = createBooking.bind(null, bookingData);
 
   return (
     <div className="scale-[1.01]">
@@ -28,7 +51,14 @@ function ReservationForm({ cabin, user }: ReservationFormProps) {
         </div>
       </div>
 
-      <form className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col">
+      <form
+        // action={createBookingWithBookingData}
+        action={async (formData) => {
+          await createBookingWithBookingData(formData);
+          resetRange();
+        }}
+        className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
+      >
         <div className="space-y-2">
           <label htmlFor="numGuests">How many guests?</label>
           <select
@@ -60,12 +90,26 @@ function ReservationForm({ cabin, user }: ReservationFormProps) {
           />
         </div>
 
-        <div className="flex justify-end items-center gap-6">
-          <p className="text-primary-300 text-base">Start by selecting dates</p>
+        <div className="flex gap-2">
+          <input
+            name="breakfast"
+            type="checkbox"
+            id="breakfast"
+            className="w-4 h-4 accent-accent-500 cursor-pointer"
+          />
+          <label htmlFor="breakfast" className="text-primary-300 text-sm">
+            Would you like to add breakfast for an extra $10 per person?
+          </label>
+        </div>
 
-          <button className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-            Reserve now
-          </button>
+        <div className="flex justify-end items-center gap-6">
+          {!(startDate && endDate) ? (
+            <p className="text-primary-300 text-base">
+              Start by selecting dates
+            </p>
+          ) : (
+            <SubmitButton pendingLabel="Reserving...">Reserve now</SubmitButton>
+          )}
         </div>
       </form>
     </div>

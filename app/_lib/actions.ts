@@ -2,10 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { isPast, isSameDay } from "date-fns";
 
 import { auth, signIn, signOut } from "./auth";
 import { supabase } from "./supabase";
-import { getBookings } from "./data-service";
+import { getBookedDatesByCabinId, getBookings } from "./data-service";
+
+type BookingData = {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  numNights: number;
+  cabinPrice: number;
+  cabinId: number;
+};
 
 export async function updateGuest(formData: FormData) {
   const session = await auth();
@@ -34,7 +43,45 @@ export async function updateGuest(formData: FormData) {
   revalidatePath("/account/profile");
 }
 
-export async function deleteReservation(bookingId: number) {
+export async function createBooking(
+  bookingData: BookingData,
+  formData: FormData
+) {
+  const session = await auth();
+  if (!session) throw new Error("Not authenticated");
+
+  // TODO: Validate that the cabin is available for the selected dates
+  const bookedDates = await getBookedDatesByCabinId(bookingData.cabinId);
+
+  const isBooked = bookedDates?.some(
+    (bookedDate) =>
+      isPast(bookedDate) ||
+      (bookingData.startDate && isSameDay(bookedDate, bookingData.startDate)) ||
+      (bookingData.endDate && isSameDay(bookedDate, bookingData.endDate))
+  );
+
+  if (isBooked) throw new Error("Selected dates are already booked");
+
+  const newBooking = {
+    ...bookingData,
+    guestId: session.user?.guestId,
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations")?.slice(0, 1000),
+    extrasPrice: 0,
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: formData.get("breakfast") === "on" ? true : false,
+    status: "unconfirmed",
+  };
+
+  const { error } = await supabase.from("bookings").insert([newBooking]);
+  if (error) throw new Error("Booking could not be created");
+
+  revalidatePath(`/account/cabins/${bookingData.cabinId}`);
+  redirect("/cabins/thank-you");
+}
+
+export async function deleteBooking(bookingId: number) {
   const session = await auth();
   if (!session) throw new Error("Not authenticated");
 
@@ -68,7 +115,6 @@ export async function updateReservation(formData: FormData) {
 
   const numGuests = formData.get("numGuests");
   const observations = formData.get("observations")?.slice(0, 1000);
-
   const updateData = { numGuests, observations };
 
   const { error } = await supabase
