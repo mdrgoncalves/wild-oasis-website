@@ -2,13 +2,18 @@ import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
 import ReservationList from "@/app/_components/ReservationList";
 
+import type { Booking } from "@/app/types/booking";
+
 export const metadata = {
   title: "Your Reservations",
 };
 
 export default async function Page() {
   const session = await auth();
-  const bookings = await getBookings(session?.user?.guestId);
+
+  const bookings = (await getBookings(
+    session?.user?.guestId
+  )) as unknown as Booking[];
 
   return (
     <div>

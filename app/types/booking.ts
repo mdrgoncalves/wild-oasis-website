@@ -11,5 +11,5 @@ export type Booking = {
   cabins: {
     name: string;
     image: string;
-  }[];
+  };
 };
